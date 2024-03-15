@@ -1,5 +1,6 @@
 import 'package:flutt_airbnb/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +12,48 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: Colors.white,
+            elevation: 5,
+            indicatorColor: Colors.white,
+            labelTextStyle: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13);
+              }
+              return const TextStyle(color: Colors.black);
+            }),
+            iconTheme: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const IconThemeData(color: Colors.redAccent, opacity: 1);
+              }
+              return const IconThemeData(color: Colors.black, opacity: 0.4);
+            })),
+        chipTheme: ChipThemeData(
+          disabledColor: Colors.white,
+          selectedColor: Colors.white,
+          secondarySelectedColor: Colors.black,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            side: const BorderSide(
+              width: 0.5,
+            ),
+          ),
+        ),
+        textTheme: TextTheme(
+          headlineMedium: Theme.of(context)
+              .textTheme
+              .headlineMedium
+              ?.copyWith(color: Colors.black),
+        ),
+        appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.black), color: Colors.white),
+      ),
       home: MyHomePage(),
     );
   }
@@ -40,13 +83,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          elevation: 2,
-          backgroundColor: Colors.grey[200],
-          foregroundColor: Colors.purple[900],
+          toolbarHeight: 80,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark),
+          elevation: 0,
           actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_none_outlined))
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_none_outlined)),
+              ],
+            )
           ],
         ),
         bottomNavigationBar: NavigationBar(
@@ -93,106 +143,149 @@ class _MyHomePageState extends State<MyHomePage> {
         ][currentPageIndex]);
   }
 
-  get todayTab => Container(
+  get todayTab => SingleChildScrollView(
+      child: Container(
+          color: Colors.white,
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          insidePadding(
-              const Text("É um prazer ter você aqui de novo, Ricardo"),
-              bottomPadding: 64),
-          insidePadding(const Text("Suas reservas")),
-          Container(
-            margin: const EdgeInsets.only(bottom: 24.0),
-            height: 70,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                buildChoice(1),
-                const SizedBox(
-                  width: 10,
-                ),
-                buildChoice(2),
-                const SizedBox(
-                  width: 10,
-                ),
-                buildChoice(3),
-                const SizedBox(
-                  width: 10,
-                ),
-                buildChoice(4),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-          ),
-          insidePadding(Container(
-            margin: const EdgeInsets.only(bottom: 48.0),
-            width: double.maxFinite,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 48.0),
-                        child: Text("Checkout amanhã"),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Michael"),
-                                Text("25 - 26 de jan."),
-                              ],
-                            ),
-                          ),
-                          CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/avatar.png"),
-                            radius: 24,
-                          )
-                        ],
-                      )
-                    ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              insidePadding(
+                  Text(
+                    "É um prazer ter você aqui de novo, Roberto",
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                ),
-                Row(
+                  bottomPadding: 64),
+              insidePadding(Text("Suas reservas",
+                  style: Theme.of(context).textTheme.titleLarge)),
+              Container(
+                margin: const EdgeInsets.only(bottom: 24.0),
+                height: 70,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Enviar mensagem"),
-                        ),
-                      ),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Ligar"),
-                        ),
-                      ),
+                    buildChoice(1),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    buildChoice(2),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    buildChoice(3),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    buildChoice(4),
+                    const SizedBox(
+                      width: 10,
                     ),
                   ],
                 ),
-              ],
-            ),
-          )),
-          insidePadding(const Text("Todas as reservas")),
-        ],
-      ));
+              ),
+              insidePadding(Container(
+                margin: const EdgeInsets.only(bottom: 48.0),
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.black26,
+                      style: BorderStyle.solid,
+                      width: 0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 48.0),
+                            child: Text("Checkout amanhã",
+                                style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Michael",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge),
+                                    Text("25 - 26 de jan.",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge),
+                                  ],
+                                ),
+                              ),
+                              const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/images/avatar.png"),
+                                radius: 24,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.black26,
+                      height: 1,
+                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              style: const ButtonStyle(
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap),
+                              onPressed: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Enviar mensagem",
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge),
+                              ),
+                            ),
+                          ),
+                          const VerticalDivider(
+                            color: Colors.black26,
+                            width: 1,
+                          ),
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Ligar",
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )),
+              insidePadding(Text("Todas as reservas",
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(decoration: TextDecoration.underline))),
+            ],
+          )));
   get calendarTab => const Center(child: Text("Calendário"));
   get advertisingTab => const Center(child: Text("Anúncio"));
   get messagesTab => const Center(child: Text("Mensagens"));
@@ -201,6 +294,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildChoice(int index) => ActionChip(
         label: Text(
           widget.textsOfChips[index],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(
+            width: statesOfChips[index] ? 2.0 : 0.5,
+          ),
         ),
         onPressed: () {
           setState(() {
